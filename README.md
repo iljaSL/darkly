@@ -101,3 +101,11 @@ sudo ssh -p 4242 root@192.168.1.210 Permission denied, please try again.
 
 Next, I tried to log in on the website. Which failed again. <br>
 While I was checking the gobuster results, I came across the following route `/admin`, which also had a log in form. I tried to log in... and there it was! The first flag.
+
+<p align="center">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag1.png">
+</p>
+
+#### How to fix the vulnerability?
+
+Don't store files or directories with any sensitive information included! Especially log in credentials for admin/root accounts. Use tools like gobuster, dirbuster or burp on your web applciation to see what kind of files or dir's are visible for the public, moves those that youd don't want to be visiable to the public eye.
