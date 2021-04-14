@@ -6,6 +6,8 @@
 
 - [Introduction](#introduction)
 - [Enumeration](#enumeration)
+- [Flags](#flags)
+  - [1: Brute Force Directories and File names](#1)
 
 ## Introduction
 
@@ -74,3 +76,28 @@ Now let's move on and visit finally the website itself. It's hard to describe th
 - An open redirection is used for redirecting the user to different kind of social media
 - An interesting cookie is given to the user `Cookie: I_am_admin=68934a3e9455fa72420237eb05902327`
 - Typing `'` into the search field results in the following error message `You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '\'' at line 1`, SQL queries are not sanitized and we know now that MySQL is used as a DB
+
+## 1: Brute Force Directories and File names
+
+The first interesting lead I investigated are the files and directories that resulted from the nmap and gobuster scans. I checked out all the folders gobuster found, which were not accessible duo the lack of permission, expect `/whatever`, in which I found the file `htpasswd` and was able to download it. 
+
+```
+kali@kali:~/Downloads$ cat htpasswd 
+root:8621ffdbc5698829397d97767ac13db3
+```
+
+The file included the name root and what looked like a md5 hash. I confirmed it with an online hash cracker and also the cracked the hash which resulted in the following string `dragon`.
+
+<p align="center">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/hash_identification.png">
+</p>
+
+It looks like I found some credentials! Now I need to find out where exactly I can use them. I first started to get access to the server via SSH, which unfortunetly did not work and would be pretty funny if it would. 
+
+```
+SSH connection with root:dragon FAILED
+sudo ssh -p 4242 root@192.168.1.210 Permission denied, please try again.
+```
+
+Next, I tried to log in on the website. Which failed again. <br>
+While I was checking the gobuster results, I came across the following route `/admin`, which also had a log in form. I tried to log in... and there it was! The first flag.
