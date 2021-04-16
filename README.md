@@ -9,6 +9,7 @@
 - [Flags](#flags)
   - [1: Brute Force Directories and File names](#1)
   - [2: Path Traversal Attack](#2)
+  - [3: Unvalidated Redirect and Forward Attack](#3)
 
 ## Introduction
 
@@ -139,3 +140,6 @@ But I still tried to move further back in the file system, which also did not wo
 
 There is a great article on the official OWASP site about the Path Traversal attack and how you can protect yourself against it! <br>
 [Path Traversal Attack OWASP](https://owasp.org/www-community/attacks/Path_Traversal)
+
+## 3: Unvalidated Redirect and Forward Attack
+
