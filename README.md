@@ -143,3 +143,16 @@ There is a great article on the official OWASP site about the Path Traversal att
 
 ## 3: Unvalidated Redirect and Forward Attack
 
+Let's move on to another finding that we discovered during the enumeration. A fast look at browser console revealed that the redirection to different social media sites at the bottom of the website are not validated. Open redirect are not directly critical for the website itself and do not allow an attacker to steal data that belongs to the owner of the website, but are rather dangerous for the user of the website. There are mainly used for phishing attacks, the victim receives an email that looks legitimate with a link that points to a correct and expected domain. What the victim may not notice, is that in a middle of a long URL there are parameters that manipulate and change where the link will take them.
+
+Let's test it out on the darkly website and forge the URL:
+
+<p align="center">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/open_redirection.png">
+</p>
+
+Click the social media link and there we go! Flag number 3!
+
+<p align="center">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag2.png">
+</p>
