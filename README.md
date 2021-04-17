@@ -79,6 +79,8 @@ Now let's move on and visit finally the website itself. It's hard to describe th
 - An interesting cookie is given to the user `Cookie: I_am_admin=68934a3e9455fa72420237eb05902327`
 - Typing `'` into the search field results in the following error message `You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '\'' at line 1`, SQL queries are not sanitized and we know now that MySQL is used as a DB
 
+## Flags
+
 ## 1: Brute Force Directories and File names
 
 The first interesting lead I investigated are the files and directories that resulted from the nmap and gobuster scans. I checked out all the folders gobuster found, which were not accessible duo the lack of permission, expect `/whatever`, in which I found the file `htpasswd` and was able to download it. 
@@ -156,3 +158,8 @@ Click the social media link and there we go! Flag number 3!
 <p align="center">
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag2.png">
 </p>
+
+#### How to fix the vulnerability?
+
+The best solution is not to use any redirects or forwards, if it's not a crucial business aspect of the website. You also could store full URLs in the database, give them identifiers and use the identifiers as request parameters. With such an approach, attackers will not be able to redirect or forward to unauthorized pages.
+You can also whitelist some URLs that you think are save for a redirection. This solution is risky though, because errors in filtering may make certain attack vectors possible.
