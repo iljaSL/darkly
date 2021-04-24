@@ -7,7 +7,7 @@
 - [Introduction](#introduction)
 - [Enumeration](#enumeration)
 - [Flags](#flags)
-  - [Brute Force Directories and File names](brute-force-directories-and-file-names)
+  - [Brute Force Directories and File names](#brute-force-directories-and-file-names)
   - [Path Traversal Attack](#2)
   - [Unvalidated Redirect and Forward Attack](#3)
 
