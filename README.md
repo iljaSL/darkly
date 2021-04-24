@@ -7,9 +7,9 @@
 - [Introduction](#introduction)
 - [Enumeration](#enumeration)
 - [Flags](#flags)
-  - [1: Brute Force Directories and File names](#1)
-  - [2: Path Traversal Attack](#2)
-  - [3: Unvalidated Redirect and Forward Attack](#3)
+  - [Brute Force Directories and File names](brute-force-directories-and-file-names)
+  - [Path Traversal Attack](#2)
+  - [Unvalidated Redirect and Forward Attack](#3)
 
 ## Introduction
 
@@ -81,7 +81,7 @@ Now let's move on and visit finally the website itself. It's hard to describe th
 
 ## Flags
 
-## 1: Brute Force Directories and File names
+## Brute Force Directories and File names
 
 The first interesting lead I investigated are the files and directories that resulted from the nmap and gobuster scans. I checked out all the folders gobuster found, which were not accessible duo the lack of permission, expect `/whatever`, in which I found the file `htpasswd` and was able to download it. 
 
