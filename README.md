@@ -8,8 +8,8 @@
 - [Enumeration](#enumeration)
 - [Flags](#flags)
   - [Brute Force Directories and File names](#brute-force-directories-and-file-names)
-  - [Path Traversal Attack](#2)
-  - [Unvalidated Redirect and Forward Attack](#3)
+  - [Path Traversal Attack](#path-traversal-attack)
+  - [Unvalidated Redirect and Forward Attack](#unvalidated-redirect-and-forward-attack)
 
 ## Introduction
 
@@ -114,7 +114,7 @@ While I was checking the gobuster results, I came across the following route `/a
 
 Don't store files or directories with any sensitive information included! Especially log in credentials for admin/root accounts. Use tools like gobuster, dirbuster or burp on your web applciation to see what kind of files or dir's are visible for the public, moves those that youd don't want to be visiable to the public eye.
 
-## 2: Path Traversal Attack
+## Path Traversal Attack
 
 The other folder that was found through nmap contained tirvial named directories and a REEADME file (which did not included anything useful). By clicking through the directories, I noticed that I was moving through the file system on the web server and that could mean that the website might be vulnerable to Path Traversal attacks.
 
@@ -143,7 +143,7 @@ But I still tried to move further back in the file system, which also did not wo
 There is a great article on the official OWASP site about the Path Traversal attack and how you can protect yourself against it! <br>
 [Path Traversal Attack OWASP](https://owasp.org/www-community/attacks/Path_Traversal)
 
-## 3: Unvalidated Redirect and Forward Attack
+## Unvalidated Redirect and Forward Attack
 
 Let's move on to another finding that we discovered during the enumeration. A fast look at browser console revealed that the redirection to different social media sites at the bottom of the website are not validated. Open redirect are not directly critical for the website itself and do not allow an attacker to steal data that belongs to the owner of the website, but are rather dangerous for the user of the website. There are mainly used for phishing attacks, the victim receives an email that looks legitimate with a link that points to a correct and expected domain. What the victim may not notice, is that in a middle of a long URL there are parameters that manipulate and change where the link will take them.
 
