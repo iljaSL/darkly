@@ -98,7 +98,7 @@ root:8621ffdbc5698829397d97767ac13db3
 The file included the name root and what looked like a md5 hash. I confirmed it with an online hash cracker and also the cracked the hash which resulted in the following string `dragon`.
 
 <p align="center">
-  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/hash_identification.png">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag1/hash_identification.png">
 </p>
 
 It looks like I found some credentials! Now I need to find out where exactly I can use them. I first started to get access to the server via SSH, which unfortunetly did not work and would be pretty funny if it would. 
@@ -112,7 +112,7 @@ Next, I tried to log in on the website. Which failed again. <br>
 While I was checking the gobuster results, I came across the following route `/admin`, which also had a log in form. I tried to log in... and there it was! The first flag.
 
 <p align="center">
-  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag1.png">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag1/flag1.png">
 </p>
 
 #### How to fix the vulnerability?
@@ -124,7 +124,7 @@ Don't store files or directories with any sensitive information included! Especi
 The other folder that was found through nmap contained tirvial named directories and a REEADME file (which did not included anything useful). By clicking through the directories, I noticed that I was moving through the file system on the web server and that could mean that the website might be vulnerable to Path Traversal attacks.
 
 <p align="center">
-  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/hidden_folder.png">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag2/hidden_folder.png">
 </p>
 
 With the help of the OWASP guide, I tried out different methods which did not work at first, but after focusing on the `Search Member` form and inserting to the url the following path:
@@ -140,7 +140,7 @@ But I still tried to move further back in the file system, which also did not wo
 ```
 
 <p align="center">
-  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag3.png">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag3/flag3.png">
 </p>
 
 #### How to fix the vulnerability?
@@ -155,13 +155,13 @@ Let's move on to another finding that we discovered during the enumeration. A fa
 Let's test it out on the darkly website and forge the URL:
 
 <p align="center">
-  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/open_redirection.png">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag3/open_redirection.png">
 </p>
 
 Click the social media link and there we go! Flag number 3!
 
 <p align="center">
-  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag2.png">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag2/flag2.png">
 </p>
 
 #### How to fix the vulnerability?
@@ -174,19 +174,19 @@ You can also whitelist some URLs that you think are save for a redirection. This
 While checking out the website for more vulnerabilities, I came across the survey page and detected in the network tab inside the console that a request payload is sent to the server, which is of course totatlly normal, but what happens if I manipulate the parameters that are exchanged between client and server?
 
 <p align="center">
-  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/web_parameter_tampering_1.png">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag4/web_parameter_tampering_1.png">
 </p>
 
 Once again we intercept the post request with burp, manipulate the parameters and forward it.
 
 <p align="center">
-  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/web_parameter_tampering_burp_2.png">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag4/web_parameter_tampering_burp_2.png">
 </p>
 
 There we go! The tampering was a success and we got flag number 4!
 
 <p align="center">
-  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag4.png">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag4/flag4.png">
 </p>
 
 Parameter tampering results on integrity and logic validation mechanism errors, here is an example for what it can be used.
