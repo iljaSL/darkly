@@ -11,6 +11,7 @@
   - [Path Traversal Attack](#path-traversal-attack)
   - [Unvalidated Redirect and Forward Attack](#unvalidated-redirect-and-forward-attack)
   - [Web Parameter Tampering](#web-parameter-tampering)
+  - [Sensitive Information in Source Code & Web Parameter Tampering](#sensitive-information-in-source-code-&-web-parameter-tampering)
 
 ## Introduction
 
@@ -79,6 +80,9 @@ Now let's move on and visit finally the website itself. It's hard to describe th
 - An open redirection is used for redirecting the user to different kind of social media
 - An interesting cookie is given to the user `Cookie: I_am_admin=68934a3e9455fa72420237eb05902327`
 - Typing `'` into the search field results in the following error message `You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '\'' at line 1`, SQL queries are not sanitized and we know now that MySQL is used as a DB
+- NSA picture on landing page redirects to a different route and is an object tag
+- Copryright page contains interesting comments in source code
+- Console log errors on the survey page, some validation functions do not work
 
 ## Flags
 
@@ -197,3 +201,15 @@ In this example, an attacker can modify the “value” information of a specifi
 Using regex to limit or validate data can help to limit this vulnerability or by avoiding to including parameters into the query string.
 Also use a server-side validation to compare the data with all inputs. 
 
+## Sensitive Information in Source Code & Web Parameter Tampering
+
+Let's focus on the other enumeration findings. Going through the page (of course with the console open!!!), I noticed some crazy amount of comments on the copryright page. Most if it was in french, but there were two interesting comments in english.
+
+```
+You must cumming from : "https://www.nsa.gov/" to go to the next step
+```
+and
+```
+Let's use this browser: "ft_bornToSec".
+```
+After a quick google search, I could for sure say that a `ft_bornToSec` browser does not exist. My next natural step was to visit the official page of the nsa and go from there on to the darkly copyrights page, which did not work.
