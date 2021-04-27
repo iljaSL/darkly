@@ -215,13 +215,13 @@ Let's use this browser: "ft_bornToSec".
 After a quick google search, I could for sure say that a `ft_bornToSec` browser does not exist. My next natural step was to visit the official page of the NSA and go from there  to the darkly copyrights page, which sadly did not work. After a rather long google session, I came across a specific Cross-Site Request Forgery attack, it is a type of attack that occurs when a malicious web site, causes a users web browser to do an unwanted action on a trusted site. It's a very broad topic, I'm focusing on the manipulation and forgery of the HTTP header. Now I just need to manipulate two fields inside the header, turning on burp, intercepting the request and changing the fields `Referer` and `User-Agent` to the following:
 
 <p align="center">
-  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag4/flag4.png">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag5/flag5_burp_header_manipulation.png">
 </p>
 
 Forwarding it...and jackpot, flag number 5 is displayed on the screen!
 
 <p align="center">
-  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag4/flag4.png">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag5/flag5.png">
 </p>
 
 #### How to fix the vulnerability?
