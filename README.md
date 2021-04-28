@@ -11,7 +11,8 @@
   - [Path Traversal Attack](#path-traversal-attack)
   - [Unvalidated Redirect and Forward Attack](#unvalidated-redirect-and-forward-attack)
   - [Web Parameter Tampering](#web-parameter-tampering)
-  - [Sensitive Information in Source Code & Web Parameter Tampering](#sensitive-information-in-source-code-&-web-parameter-tampering)
+  - [Sensitive Information in Source Code & Cross-Site Request Forgery](#sensitive-information-in-source-code-&-cross-site-request-forgery)
+  - [Unrestricted File Upload](#unrestricted-file-upload)
 
 ## Introduction
 
@@ -229,3 +230,31 @@ Forwarding it...and jackpot, flag number 5 is displayed on the screen!
 Don't leave sensative comments inside the source code that you don't want to be seen by the public! Also verify server side if the origin/referer header is present and its value matches the target origin. Create a strong check for the referer and create a whitelist for the user agent.
 
 [Click for more information (OWASP)](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#introduction)
+
+## Unrestricted File Upload
+
+Having done some rooms on try hack me that were specialized on unrestircted file uploads, I got really interested in the upload picture site on darkly. First things first, I tried to intercept the request with burpsuite by uploading a normal jpeg picture, and I was able to capture some interesting specs:
+
+<p align="center">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag6/enumeration_first_upload.png">
+</p>
+
+That looks like the parameters might be not chekced by the server. But first I tried if the file upload is properly checked on the backend. Files without an `.jpeg` extensions got filtered out, `webshell.php` or `webshell.py` were not allowed to upload. But one thing was not considered by the backend check, a double extension. I uploaded the following file containing a revere webshell script, `test.php%00.jpg`. The `.jpg` gets truncated and `.php` becomes the new extension and it worked! 
+
+<p align="center">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag6/enumeration_bonus_breach.png">
+</p>
+
+But unfortunetly, I did not get any flag for that vulnurbility. I guess it's a bonus point. <br>
+Knowing that the server does have some filter problems and highly likly a flag, I focused again on the burpsuite results. This time I upload a plain `webshell.php` file, intercept it wiht burp and change the `Content-Type` to `image/jpeg`. 
+
+<p align="center">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag6/exploit_flag6.png">
+</p>
+
+Once again I forward it and it actually worked! The file has been upload and I received flag number 6.
+
+<p align="center">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag6/flag6.png">
+</p>
+
