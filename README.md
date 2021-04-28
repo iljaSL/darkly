@@ -11,7 +11,7 @@
   - [Path Traversal Attack](#path-traversal-attack)
   - [Unvalidated Redirect and Forward Attack](#unvalidated-redirect-and-forward-attack)
   - [Web Parameter Tampering](#web-parameter-tampering)
-  - [Sensitive Information in Source Code & Cross-Site Request Forgery](#sensitive-information-in-source-code-&-cross-site-request-forgery)
+  - [Sensitive Information in Source Code and Cross-Site Request Forgery](#sensitive-information-in-source-code-and-cross-site-request-forgery)
   - [Unrestricted File Upload](#unrestricted-file-upload)
 
 ## Introduction
@@ -202,7 +202,7 @@ In this example, an attacker can modify the “value” information of a specifi
 Using regex to limit or validate data can help to limit this vulnerability or by avoiding to including parameters into the query string.
 Also use a server-side validation to compare the data with all inputs. 
 
-## Sensitive Information in Source Code & Cross-Site Request Forgery
+## Sensitive Information in Source Code and Cross-Site Request Forgery
 
 Let's focus on the other enumeration findings. Going through the page (of course with the console open!!!), I noticed some crazy amount of comments on the copyright  page. Most if it was in french, but there were two interesting comments in english.
 
@@ -233,28 +233,31 @@ Don't leave sensative comments inside the source code that you don't want to be 
 
 ## Unrestricted File Upload
 
-Having done some rooms on try hack me that were specialized on unrestircted file uploads, I got really interested in the upload picture site on darkly. First things first, I tried to intercept the request with burpsuite by uploading a normal jpeg picture, and I was able to capture some interesting specs:
+Having done some rooms on try hack me that were specialized on unrestricted file uploads, I got really interested in the upload picture site on darkly. First things first, I tried to intercept the request with burpsuite  by uploading a normal JPEG picture, and I was able to capture some interesting specs:
 
 <p align="center">
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag6/enumeration_first_upload.png">
 </p>
 
-That looks like the parameters might be not chekced by the server. But first I tried if the file upload is properly checked on the backend. Files without an `.jpeg` extensions got filtered out, `webshell.php` or `webshell.py` were not allowed to upload. But one thing was not considered by the backend check, a double extension. I uploaded the following file containing a revere webshell script, `test.php%00.jpg`. The `.jpg` gets truncated and `.php` becomes the new extension and it worked! 
+That looks like the parameters might be not checked by the server. But first I tried if the file upload is properly checked on the backend. Files without an `.jpeg` extensions got filtered out, `webshell.php` or `webshell.py` were not allowed to upload. But one thing was not considered by the backend check, a double extension. I uploaded the following file containing a reverse webshell script, `test.php%00.jpg`. The `.jpg` gets truncated and `.php` becomes the new extension, and it worked! 
 
 <p align="center">
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag6/enumeration_bonus_breach.png">
 </p>
 
-But unfortunetly, I did not get any flag for that vulnurbility. I guess it's a bonus point. <br>
-Knowing that the server does have some filter problems and highly likly a flag, I focused again on the burpsuite results. This time I upload a plain `webshell.php` file, intercept it wiht burp and change the `Content-Type` to `image/jpeg`. 
+But unfortunately, I did not get any flag for that vulnerability. I guess it's a bonus point. <br>
+Knowing that the server does have some filter problems and highly likely  a flag, I focused again on the burpsuite results. This time I upload a plain `webshell.php` file, intercept it with burp and change the `Content-Type` to `image/jpeg`. 
 
 <p align="center">
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag6/exploit_flag6.png">
 </p>
 
-Once again I forward it and it actually worked! The file has been upload and I received flag number 6.
+Once again I forward it and it actually worked! The file has been upload, and I received flag number 6.
 
 <p align="center">
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag6/flag6.png">
 </p>
 
+#### How to fix the vulnerability?
+
+Files should be thoroughly scanned and validated before being uploaded. All the control characters, special characters and Unicode ones should be removed from the filenames and their extensions without any exception.
