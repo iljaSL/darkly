@@ -1,6 +1,6 @@
 # darkly
 
-## The project is incomplete 🚧 The flag hunt is still ongoing! 🏁 :) 
+## The project is incomplete 🚧 The flag hunt is still ongoing! 🏁 :)
 
 ## Table of content
 
@@ -46,13 +46,13 @@ Host is up (0.0030s latency).
 Not shown: 998 filtered ports
 PORT     STATE SERVICE VERSION
 80/tcp   open  http    nginx 1.8.0
-| http-robots.txt: 2 disallowed entries 
+| http-robots.txt: 2 disallowed entries
 |_/whatever /.hidden
 |_http-server-header: nginx/1.8.0
 |_http-title: BornToSec - Web Section
 4242/tcp open  ssh     OpenSSH 5.9p1 Debian 5ubuntu1.7 (Ubuntu Linux; protocol 2.0)
-|_dicom-ping: 
-| ssh-hostkey: 
+|_dicom-ping:
+| ssh-hostkey:
 |   1024 c1:03:76:40:29:e8:ab:f6:8a:9f:1c:71:6e:23:e0:58 (DSA)
 |   2048 89:95:1a:c3:7c:1b:fc:3c:34:1d:76:d5:c9:fa:86:03 (RSA)
 |_  256 09:86:1a:be:13:a5:a1:0c:7f:f7:55:50:ac:7a:c7:1a (ECDSA)
@@ -64,20 +64,20 @@ A big plus, nmap even detected the `robots.txt` file, which is a very common fil
 I also like to run `gobuster` or `dirbuster` to draw a folder structures map of the website and find with a little luck more hidden folders or files that weren't meant for the public.
 
 ```
-gobuster dir -u http://192.168.1.210 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 
+gobuster dir -u http://192.168.1.210 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
 ```
 
 The result:
 
 ```
 /images               (Status: 301) [Size: 184] [--> http://192.168.1.210/images/]
-/admin                (Status: 301) [Size: 184] [--> http://192.168.1.210/admin/] 
-/audio                (Status: 301) [Size: 184] [--> http://192.168.1.210/audio/] 
-/css                  (Status: 301) [Size: 184] [--> http://192.168.1.210/css/]   
+/admin                (Status: 301) [Size: 184] [--> http://192.168.1.210/admin/]
+/audio                (Status: 301) [Size: 184] [--> http://192.168.1.210/audio/]
+/css                  (Status: 301) [Size: 184] [--> http://192.168.1.210/css/]
 /includes             (Status: 301) [Size: 184] [--> http://192.168.1.210/includes/]
-/js                   (Status: 301) [Size: 184] [--> http://192.168.1.210/js/]      
-/fonts                (Status: 301) [Size: 184] [--> http://192.168.1.210/fonts/]   
-/errors               (Status: 301) [Size: 184] [--> http://192.168.1.210/errors/]  
+/js                   (Status: 301) [Size: 184] [--> http://192.168.1.210/js/]
+/fonts                (Status: 301) [Size: 184] [--> http://192.168.1.210/fonts/]
+/errors               (Status: 301) [Size: 184] [--> http://192.168.1.210/errors/]
 /whatever             (Status: 301) [Size: 184] [--> http://192.168.1.210/whatever/]
 ```
 
@@ -95,10 +95,10 @@ Now let's move on and visit finally the website itself. It's hard to describe th
 
 ## Brute Force Directories and File names
 
-The first interesting lead I investigated are the files and directories that resulted from the nmap and gobuster scans. I checked out all the folders gobuster found, which were not accessible duo the lack of permission, expect `/whatever`, in which I found the file `htpasswd` and was able to download it. 
+The first interesting lead I investigated are the files and directories that resulted from the nmap and gobuster scans. I checked out all the folders gobuster found, which were not accessible duo the lack of permission, expect `/whatever`, in which I found the file `htpasswd` and was able to download it.
 
 ```
-kali@kali:~/Downloads$ cat htpasswd 
+kali@kali:~/Downloads$ cat htpasswd
 root:8621ffdbc5698829397d97767ac13db3
 ```
 
@@ -108,7 +108,7 @@ The file included the name root and what looked like a md5 hash. I confirmed it 
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag1/hash_identification.png">
 </p>
 
-It looks like I found some credentials! Now I need to find out where exactly I can use them. I first started to get access to the server via SSH, which unfortunetly did not work and would be pretty funny if it would. 
+It looks like I found some credentials! Now I need to find out where exactly I can use them. I first started to get access to the server via SSH, which unfortunetly did not work and would be pretty funny if it would.
 
 ```
 SSH connection with root:dragon FAILED
@@ -206,7 +206,7 @@ In this example, an attacker can modify the “value” information of a specifi
 #### How to fix the vulnerability?
 
 Using regex to limit or validate data can help to limit this vulnerability or by avoiding to including parameters into the query string.
-Also use a server-side validation to compare the data with all inputs. 
+Also use a server-side validation to compare the data with all inputs.
 
 ## Sensitive Information in Source Code and Cross-Site Request Forgery
 
@@ -245,14 +245,14 @@ Having done some rooms on try hack me that were specialized on unrestricted file
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag6/enumeration_first_upload.png">
 </p>
 
-That looks like the parameters might be not checked by the server. But first I tried if the file upload is properly checked on the backend. Files without an `.jpeg` extensions got filtered out, `webshell.php` or `webshell.py` were not allowed to upload. But one thing was not considered by the backend check, a double extension. I uploaded the following file containing a reverse webshell script, `test.php%00.jpg`. The `.jpg` gets truncated and `.php` becomes the new extension, and it worked! 
+That looks like the parameters might be not checked by the server. But first I tried if the file upload is properly checked on the backend. Files without an `.jpeg` extensions got filtered out, `webshell.php` or `webshell.py` were not allowed to upload. But one thing was not considered by the backend check, a double extension. I uploaded the following file containing a reverse webshell script, `test.php%00.jpg`. The `.jpg` gets truncated and `.php` becomes the new extension, and it worked!
 
 <p align="center">
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag6/enumeration_bonus_breach.png">
 </p>
 
 But unfortunately, I did not get any flag for that vulnerability. I guess it's a bonus point. <br>
-Knowing that the server does have some filter problems and highly likely  a flag, I focused again on the burpsuite results. This time I upload a plain `webshell.php` file, intercept it with burp and change the `Content-Type` to `image/jpeg`. 
+Knowing that the server does have some filter problems and highly likely  a flag, I focused again on the burpsuite results. This time I upload a plain `webshell.php` file, intercept it with burp and change the `Content-Type` to `image/jpeg`.
 
 <p align="center">
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag6/exploit_flag6.png">
@@ -303,7 +303,7 @@ During the reconnaissance I noticed that early on that there is only one image c
 </p>
 
 Theoretically, I could craft URL's for phishing attacks and abuse it, because in this case, data inside the object tag is not checked, and I can execute script commands.
-However, I did not receive a flag for that one. Moving on to the URL, lets craft one with once again the help of OWASP. A simple `<script>alert("XXS")</script>` won't work though, we need to decode it with base64 otherwise it won't work. Once again I use burp for it: 
+However, I did not receive a flag for that one. Moving on to the URL, lets craft one with once again the help of OWASP. A simple `<script>alert("XXS")</script>` won't work though, we need to decode it with base64 otherwise it won't work. Once again I use burp for it:
 
 <p align="center">
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag8/exploit_payload.png">
@@ -328,7 +328,7 @@ It is not vulnerable against SQL injection attacks, but I found some other inter
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag9/console_errors.png">
 </p>
 
-Two functions are not defined, and the one called `checkForm` sounds promising. Starting to test out some XSS, I noticed fast that `<tags>` are being filtered out by the backend, and we can post feedback without typing down a message, the undefined function `checkForm` would explain that. 
+Two functions are not defined, and the one called `checkForm` sounds promising. Starting to test out some XSS, I noticed fast that `<tags>` are being filtered out by the backend, and we can post feedback without typing down a message, the undefined function `checkForm` would explain that.
 
 <p align="center">
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag9/different_comment_input.png">
@@ -382,9 +382,9 @@ After doing some basic testing, I quickly found out that the search section insi
 - The individual queries must return the same number of columns
 - The data types in each column must be compatible between the individual queries
 
-So, first we need to find out 
+So, first we need to find out
 
-- How many columns are being returned from the original query? 
+- How many columns are being returned from the original query?
 - Which columns returned from the original query are of a suitable data type to hold the results from the injected query?
 
 To determine how many columns are being returned, we simply need to start with the following query `1 OR 1=1 UNION SELECT NULL--` and increment the null if an error is returned. The DB behind darkly returns two columns:
@@ -400,7 +400,7 @@ Now we can move forward and check out the tables inside the DB, we know that dar
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag11/db_information_schema.png">
 </p>
 
-It's a search form for finding site members, so we have a clue that the `users` table is probably our main target of all the tables. 
+It's a search form for finding site members, so we have a clue that the `users` table is probably our main target of all the tables.
 Now we need more information about the users table, for example about the columns.
 
 <p align="center">
@@ -413,8 +413,8 @@ Awesome! Now I can check out what is exactly inside the users table, with the SQ
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag11/decrypted_flag.png">
 </p>
 
-Again the output is large, I only took a screenshot of the most important one. 
-We get a detailed step to step guide in how to retrieve the flag. Let's decrypt the MD5 (of course) hash, it results in `fortytwo` and encrypted it again into a sha256 hash. 
+Again the output is large, I only took a screenshot of the most important one.
+We get a detailed step to step guide in how to retrieve the flag. Let's decrypt the MD5 (of course) hash, it results in `fortytwo` and encrypted it again into a sha256 hash.
 The result is flag number 11:
 
 <p align="center">
@@ -424,14 +424,14 @@ The result is flag number 11:
 #### How to fix the vulnerability?
 
 Use Prepared Statements. Prepared statements ensure that an attacker is not able to change the intent of a query, even if SQL commands are inserted by an attacker.
-Use Stored procedures. They require the developer to just build SQL statements with parameters which are automatically parameterized unless the developer does something largely out of the norm. The difference between prepared statements and stored procedures is that the SQL code for a stored procedure is defined and stored in the database itself, and then called from the application. Both of these techniques have the same effectiveness in preventing SQL injection so your organization should choose which approach makes the most sense for you. 
+Use Stored procedures. They require the developer to just build SQL statements with parameters which are automatically parameterized unless the developer does something largely out of the norm. The difference between prepared statements and stored procedures is that the SQL code for a stored procedure is defined and stored in the database itself, and then called from the application. Both of these techniques have the same effectiveness in preventing SQL injection so your organization should choose which approach makes the most sense for you.
 
 [Click for more information about SQL Injection Attacks (OWASP)](https://portswigger.net/web-security/sql-injection/union-attacks)
 [Click for more information about SQL Injection Preventions (OWASP)](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html)
 
 ## SQL Injection Union Attack Part Two
 
-Same vulnerability as the previous flag [SQL Injection Union Attack Part One](#sql-injection-union-attack-part-one), this time we are searching for images. I'm not gonna go into detail and only post the screenshots regarding the attack. 
+Same vulnerability as the previous flag [SQL Injection Union Attack Part One](#sql-injection-union-attack-part-one), this time we are searching for images. I'm not gonna go into detail and only post the screenshots regarding the attack.
 
 First we test if the search form is vulnerable against SQL injection attacks:
 
@@ -472,7 +472,7 @@ And flag number 12 is:
 #### How to fix the vulnerability?
 
 Use Prepared Statements. Prepared statements ensure that an attacker is not able to change the intent of a query, even if SQL commands are inserted by an attacker.
-Use Stored procedures. They require the developer to just build SQL statements with parameters which are automatically parameterized unless the developer does something largely out of the norm. The difference between prepared statements and stored procedures is that the SQL code for a stored procedure is defined and stored in the database itself, and then called from the application. Both of these techniques have the same effectiveness in preventing SQL injection so your organization should choose which approach makes the most sense for you. 
+Use Stored procedures. They require the developer to just build SQL statements with parameters which are automatically parameterized unless the developer does something largely out of the norm. The difference between prepared statements and stored procedures is that the SQL code for a stored procedure is defined and stored in the database itself, and then called from the application. Both of these techniques have the same effectiveness in preventing SQL injection so your organization should choose which approach makes the most sense for you.
 
 [Click for more information about SQL Injection Attacks (OWASP)](https://portswigger.net/web-security/sql-injection/union-attacks)
 [Click for more information about SQL Injection Preventions (OWASP)](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html)
