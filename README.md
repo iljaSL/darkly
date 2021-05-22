@@ -20,7 +20,7 @@
   - [SQL Injection Union Attack Part One](#sql-injection-union-attack-part-one)
   - [SQL Injection Union Attack Part Two](#sql-injection-union-attack-part-two)
   - [Web Parameter Tampering Part Two](#web-parameter-tampering-part-two)
-  - [Web Crawling For Sensitive Informations](#web-crawling-for-sensitive-informations)
+  - [Web Crawling For Sensitive Information](#web-crawling-for-sensitive-information)
 
 ## Introduction
 
@@ -42,6 +42,7 @@ nmap -sC -sV <IP>
 `-sV (Version detection)`
 
 The result:
+
 ```
 Nmap scan report for 192.168.1.210
 Host is up (0.0030s latency).
@@ -60,6 +61,7 @@ PORT     STATE SERVICE VERSION
 |_  256 09:86:1a:be:13:a5:a1:0c:7f:f7:55:50:ac:7a:c7:1a (ECDSA)
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ```
+
 Now we are absolutely sure that darkly is an web server running with nginx on port 80, it allows to establish an SSH connection on port 4242 and we know the version numbers.
 A big plus, nmap even detected the `robots.txt` file, which is a very common file, but unfortunately too many times the developers try to hide files or directories with sensitive information from the web crawlers.
 
@@ -141,6 +143,7 @@ With the help of the OWASP guide, I tried out different methods which did not wo
 ```
 192.168.1.210/?page=../../../../etc/shadow
 ```
+
 I finally got a prompt popping out with the message `Almost`, which at first I labeled out as a 42 trolling attempt.
 But I still tried to move further back in the file system, which also did not work either. So I have tried it with `/etc/passwd` (stores user account information) and after a few attempts and finally got a prompt popping out with the flag inside it!
 
@@ -212,16 +215,19 @@ Also use a server-side validation to compare the data with all inputs.
 
 ## Sensitive Information in Source Code and Cross-Site Request Forgery
 
-Let's focus on the other enumeration findings. Going through the page (of course with the console open!!!), I noticed some crazy amount of comments on the copyright  page. Most if it was in french, but there were two interesting comments in english.
+Let's focus on the other enumeration findings. Going through the page (of course with the console open!!!), I noticed some crazy amount of comments on the copyright page. Most if it was in french, but there were two interesting comments in english.
 
 ```
 You must cumming from : "https://www.nsa.gov/" to go to the next step
 ```
+
 and
+
 ```
 Let's use this browser: "ft_bornToSec".
 ```
-After a quick google search, I could for sure say that a `ft_bornToSec` browser does not exist. My next natural step was to visit the official page of the NSA and go from there  to the darkly copyrights page, which sadly did not work. After a rather long google session, I came across a specific Cross-Site Request Forgery attack, it is a type of attack that occurs when a malicious web site, causes a users web browser to do an unwanted action on a trusted site. It's a very broad topic, I'm focusing on the manipulation and forgery of the HTTP header. Now I just need to manipulate two fields inside the header, turning on burp, intercepting the request and changing the fields `Referer` and `User-Agent` to the following:
+
+After a quick google search, I could for sure say that a `ft_bornToSec` browser does not exist. My next natural step was to visit the official page of the NSA and go from there to the darkly copyrights page, which sadly did not work. After a rather long google session, I came across a specific Cross-Site Request Forgery attack, it is a type of attack that occurs when a malicious web site, causes a users web browser to do an unwanted action on a trusted site. It's a very broad topic, I'm focusing on the manipulation and forgery of the HTTP header. Now I just need to manipulate two fields inside the header, turning on burp, intercepting the request and changing the fields `Referer` and `User-Agent` to the following:
 
 <p align="center">
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag5/flag5_burp_header_manipulation.png">
@@ -241,7 +247,7 @@ Don't leave sensative comments inside the source code that you don't want to be 
 
 ## Unrestricted File Upload
 
-Having done some rooms on try hack me that were specialized on unrestricted file uploads, I got really interested in the upload picture site on darkly. First things first, I tried to intercept the request with burpsuite  by uploading a normal JPEG picture, and I was able to capture some interesting specs:
+Having done some rooms on try hack me that were specialized on unrestricted file uploads, I got really interested in the upload picture site on darkly. First things first, I tried to intercept the request with burpsuite by uploading a normal JPEG picture, and I was able to capture some interesting specs:
 
 <p align="center">
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag6/enumeration_first_upload.png">
@@ -254,7 +260,7 @@ That looks like the parameters might be not checked by the server. But first I t
 </p>
 
 But unfortunately, I did not get any flag for that vulnerability. I guess it's a bonus point. <br>
-Knowing that the server does have some filter problems and highly likely  a flag, I focused again on the burpsuite results. This time I upload a plain `webshell.php` file, intercept it with burp and change the `Content-Type` to `image/jpeg`.
+Knowing that the server does have some filter problems and highly likely a flag, I focused again on the burpsuite results. This time I upload a plain `webshell.php` file, intercept it with burp and change the `Content-Type` to `image/jpeg`.
 
 <p align="center">
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag6/exploit_flag6.png">
@@ -487,9 +493,9 @@ After landing again on the login page, I noticed the forgot password mechanism. 
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag13/flag13_html_form_tags.png">
 </p>
 
-The type `hidden` of the HTML tag input is in this case used as a security measure. It is true that the email will be not displayed to the user in the page's content, BUT it is still visible. It can be edited using any browser's developer tools or "View Source" functionality. Do not rely on hidden inputs as a form of security. 
+The type `hidden` of the HTML tag input is in this case used as a security measure. It is true that the email will be not displayed to the user in the page's content, BUT it is still visible. It can be edited using any browser's developer tools or "View Source" functionality. Do not rely on hidden inputs as a form of security.
 This can be also abused for phishing attack, by building a reset page and sending the malicious site to a user with the hackers email instead.
-Manipulating the email and click  the reset button results in getting also the flag number 13!
+Manipulating the email and click the reset button results in getting also the flag number 13!
 
 <p align="center">
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag13/flag_13.png">
@@ -499,7 +505,7 @@ Manipulating the email and click  the reset button results in getting also the f
 
 Don't use the type `hidden` of the input tag for a sensitive task as resetting an email. Instead, do it in the backend to prevent a web parameter tampering.
 
-## Web Crawling For Sensitive Informations
+## Web Crawling For Sensitive Information
 
 This was a rather tricky flag to get. During the path traversal attack process of getting the second flag, I mentioned that the many directories always include a README file with a comment in French inside it and I marked it as not important information. Well translating a couple of those text in different README files, I noticed that they included clues (but why are those comments in french 42!!!) in pointing out that one of the README is having the flag. Going through the many directories manual would take at least a day, so it was pretty clear that I need to use a web crawler for that task. I coded a small script for this task and got after a minute the following output with the flag number 14:
 
@@ -509,7 +515,7 @@ This was a rather tricky flag to get. During the path traversal attack process o
 
 #### How to fix the vulnerability?
 
-Search engines, like Google, use bots or web crawlers and apply search algorithm to gather data, so relevant links are provided in response to search queries. It helps in generating a list of web pages or search engine results and improving the SEO. A simple rule is to make some of your web pages/directories not discoverable that you do not want to be discovered by the public. 
+Search engines, like Google, use bots or web crawlers and apply search algorithm to gather data, so relevant links are provided in response to search queries. It helps in generating a list of web pages or search engine results and improving the SEO. A simple rule is to make some of your web pages/directories not discoverable that you do not want to be discovered by the public.
 
 ### And that is the last flag! Darkly has been pwned! Thanks for the reading my progress and happy hacking(ethical) to all of you!
 
