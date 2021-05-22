@@ -1,7 +1,5 @@
 # darkly
 
-## The project is incomplete 🚧 The flag hunt is still ongoing! 🏁 :)
-
 ## Table of content
 
 - [Introduction](#introduction)
@@ -24,15 +22,12 @@
 
 ## Introduction
 
-This Hive Helsinki Project is about finding 14 flags on a self hosted website, that I run via VirtualBox (iso file is inside the assets), through 14 different breaches.
+This Hive Helsinki Project is about finding 14 flags on a self hosted website, that I run via VirtualBox, through 14 different breaches.
 That's it with the clues! More information about how the project is gonna be evaluated is found in the subject file.
-
-The `darkly_enumeration.ctb` file contains my detailed enumeration process and can be opened with any note taking application. <br>
-My favorite one is [CherryTree](https://www.giuspen.com/cherrytree/), which is free and open source.
 
 ## Enumeration
 
-Enumeration is a continuous ongoing operation. Usually when I'm completely stuck on one specific problem, I'm always returning to the start and begin to search for new clues. This means that the Enumeration section will be dynamic and changing over time. It always starts with a basic nmap scan. (The IP address is provided to the student as soon as the darkly web server is started with VirtualBox)
+Enumeration is a continuous ongoing operation. Usually when I'm completely stuck on one specific problem, I'm always returning to the start and begin to search for new clues. This means that the Enumeration section will be dynamic and changing over time. It always starts with a basic nmap scan. (The IP address is provided to the student as soon as the darkly web server ISO is started via VirtualBox/VMware etc.)
 
 ```
 nmap -sC -sV <IP>
