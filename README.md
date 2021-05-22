@@ -444,7 +444,7 @@ Same vulnerability as the previous flag [SQL Injection Union Attack Part One](#s
 First we test if the search form is vulnerable against SQL injection attacks:
 
 <p align="center">
-  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag11/sha256_encoding.png">
+  <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag12/sql_inj_vuln_test.png">
 </p>
 
 How many columns are being returned?
@@ -453,7 +453,7 @@ How many columns are being returned?
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag12/column_test.png">
 </p>
 
-Let's find the most interesting column, this time it's not `users`, but something with images.
+Two are returned. Let's find the most interesting column, this time it's not `users`, but something with images.
 
 <p align="center">
   <img src="https://github.com/iljaSL/darkly/blob/main/assets/images/flag12/images_column_names.png">
