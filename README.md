@@ -3,6 +3,7 @@
 ## Table of content
 
 - [Introduction](#introduction)
+- [Tools](#tools)
 - [Enumeration](#enumeration)
 - [Flags](#flags)
   - [Brute Force Directories and File names](#brute-force-directories-and-file-names)
@@ -24,6 +25,13 @@
 
 This Hive Helsinki Project is about finding 14 flags on a self hosted website, that I run via VirtualBox, through 14 different breaches.
 That's it with the clues! More information about how the project is gonna be evaluated is found in the subject file.
+
+## Tools
+
+Tools used for this CTF project:
+- Burp Suite
+- Nmap
+- Gobuster
 
 ## Enumeration
 
